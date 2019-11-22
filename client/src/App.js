@@ -53,13 +53,13 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.books.map(book =>
+                {this.state.books.length ? (this.state.books.map(book =>
                   <tr>
                     <td><Link to={`/show/${book._id}`}>{book.isbn}</Link></td>
                     <td>{book.title}</td>
                     <td>{book.author}</td>
                   </tr>
-                )}
+                )) : <h3>Nothing to see here...</h3>}
               </tbody>
             </table>
           </div>
