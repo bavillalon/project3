@@ -3,7 +3,7 @@ const db = require("../models");
 // Defining methods for the DawsonController
 module.exports = {
   findAll: function(req, res) {
-    console.log(req.query);
+    console.log(req);
     db.Dawson
       .find({'grantor' : new RegExp(req.query.grantor, 'i')})  
       .then(dbModel => res.json(dbModel))

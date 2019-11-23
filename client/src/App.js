@@ -13,12 +13,13 @@ class App extends Component {
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-    axios.get('/api/book')
+    axios.get('/api/books',{params:{grantor:"DENSON"}})
       .then(res => {
         this.setState({ books: res.data });
         console.log(this.state.books);
       })
       .catch((error) => {
+        console.log(error)
         if(error.response.status === 401) {
           console.log(error.response.status)
           this.props.history.push("/login");

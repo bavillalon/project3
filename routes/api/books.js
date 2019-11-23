@@ -3,6 +3,9 @@ const router = require("express").Router();
 const booksController = require("../../controllers/booksController");
 const axios = require("axios");
 
+const passport = require("passport");
+require('../../config/passport')(passport);
+
 const APIKey = process.env.GOOGLE_KEY;
 
 router.route("/search")
@@ -18,7 +21,7 @@ router.route("/search")
 
 // Matches with "/api/books"
 router.route("/")
-  .get(booksController.findAll)
+  .get(passport.authenticate('jwt', { session: false}), booksController.findAll)
   .post(booksController.create);
 
 // Matches with "/api/books/:id"

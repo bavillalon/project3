@@ -24,8 +24,8 @@ getToken = function (headers) {
 
 // If no API routes are hit, send the React app
 router.use( passport.authenticate('jwt', { session: false}), function(req, res) {
-  var token = getToken(req.headers);
   console.log(req);
+  var token = getToken(req.headers);
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
   //if (token) {
   //  Book.find(function (err, books) {
