@@ -9,7 +9,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './index.css';
 import Login from './Login';
 import Register from './Register';
+const axios = require("axios");
 
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 ReactDOM.render(
     <Router>
         <div>

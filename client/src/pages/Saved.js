@@ -4,7 +4,10 @@ import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
-import Thumbnail from "../components/Thumbnail"
+import Thumbnail from "../components/Thumbnail";
+const axios = require("axios");
+
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 
 class Books extends Component {
   state = {
