@@ -2,7 +2,7 @@ import axios from "axios";
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 export default {
   // Gets all books
-  getBooks: function(query) {
+  searchGrantor: function(query) {
     console.log("I'm here")
     return axios.get("/api/books",{params:{grantor:query}});
   },
