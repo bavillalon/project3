@@ -20,10 +20,9 @@ class App extends Component {
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-    axios.get('/api/books', { params: { grantor: "DENSON" } })
+    axios.post('/token')
       .then(res => {
-        this.setState({ documents: res.data });
-        console.log(this.state.documents);
+        console.log(res);
       })
       .catch((error) => {
         console.log(error)

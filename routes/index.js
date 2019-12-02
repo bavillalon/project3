@@ -21,10 +21,19 @@ getToken = function (headers) {
   }
 };
 
-
-// If no API routes are hit, send the React app
-router.use(function(req, res) {
+router.post("/token", passport.authenticate('jwt', { session: false}), function(req,res){
   console.log(req);
+  var token = getToken(req.headers);
+  if (token) {
+      res.status(301);
+  } else {
+    return res.status(401).send({success: false, msg: 'Unauthorized.'});
+  }
+
+})
+// If no API routes are hit, send the React app
+router.use( passport.authenticate('jwt', { session: false}), function(req, res) {
+  //console.log(req);
   var token = getToken(req.headers);
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
   //if (token) {
