@@ -20,7 +20,6 @@ ReactDOM.render(
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
         <Route exact path="/saved" component={Books} />
-        <Route exact path="/search" component={Search} />
       </Switch>
     </div>
   </Router >,

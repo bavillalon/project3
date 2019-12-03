@@ -14,7 +14,9 @@ class App extends Component {
     super(props);
     this.state = {
       documents: [],
-      grantor: ""
+      grantor: "",
+      user: "",
+      username: ""
     };
   }
 
@@ -22,7 +24,8 @@ class App extends Component {
     axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
     axios.post('/token')
       .then(res => {
-        console.log(res);
+        console.log(res.data._id)
+        this.setState({ user: res.data._id, username: res.data.username })
       })
       .catch((error) => {
         console.log(error)
@@ -59,6 +62,24 @@ class App extends Component {
     }
   };
 
+  AddToRunsheet = event => {
+    event.preventDefault();
+    API.saveToRunsheet(this.state.user, JSON.stringify(this.state.documents.filter((document) => (document._id === event.target.value))))
+      .then(event.target.disabled = true)
+      .catch(err => console.log(err));
+
+    //if (this.state.grantor) {
+    //  API.searchGrantor(this.state.grantor)
+    //    .then(res => {
+    //      console.log(res.data)
+    //      this.setState({
+    //        documents: res.data
+    //      })
+    //    })
+    //    .catch(err => console.log(err));
+    //}
+  };
+
   render() {
     return (
       <div className="container">
@@ -67,7 +88,7 @@ class App extends Component {
             <h3 className="panel-title">
               County Search &nbsp;
               {localStorage.getItem('jwtToken') &&
-                <button className="btn btn-primary" onClick={this.logout}>Logout</button>
+                <button className="btn btn-primary" onClick={this.logout}>Logout {this.state.username}</button>
               }
             </h3>
           </div>
@@ -93,37 +114,42 @@ class App extends Component {
             </Col>
           </Row>
           <div className="panel-body">
-            <table className="table table-stripe">
-              <thead>
-                <tr>
-                  <th>Instrument</th>
-                  <th>Grantor</th>
-                  <th>Grantee</th>
-                  <th>Filing Date</th>
-                  <th>Description</th>
-                  <th>Add to Runsheet</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.documents.length ? (
-                  this.state.documents.map(document => (
+            {this.state.documents.length ? (
+              <table className="table table-stripe">
+                <thead>
+                  <tr>
+                    <th>Instrument</th>
+                    <th>Grantor</th>
+                    <th>Grantee</th>
+                    <th>Filing Date</th>
+                    <th>Description</th>
+                    <th>Add to Runsheet</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.documents.map(document => (
                     <tr key={document._id}>
                       <td>{document.instrumentNumber}</td>
                       <td>{document.grantor}</td>
                       <td>{document.grantee}</td>
                       <td>{document.filingDate}</td>
                       <td>{document.description}</td>
-                      <td><button>Add</button></td>
+                      <td><button
+                        name="_id"
+                        value={document._id}
+                        onClick={this.AddToRunsheet}
+                        disabled={false}>Add</button></td>
                     </tr>
-                  ))
-                ) : (
-                    <h3>No Results to Display</h3>
+                  )
                   )}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            ) : (
+                <h3>No Results to Display</h3>
+              )}
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }

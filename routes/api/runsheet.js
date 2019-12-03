@@ -1,0 +1,14 @@
+const router = require("express").Router();
+const runsheetController = require("../../controllers/runsheetController");
+const axios = require("axios");
+
+const passport = require("passport");
+require('../../config/passport')(passport);
+
+router
+  .route("/:id")
+  .post(runsheetController.findById)
+
+
+  
+module.exports = router;

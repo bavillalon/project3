@@ -7,8 +7,9 @@ export default {
     return axios.get("/api/books",{params:{grantor:query}});
   },
   // Gets the book with the given id
-  getBook: function(id) {
-    return axios.get("/api/books/" + id);
+  saveToRunsheet: function(userid,payload) {
+    console.log(userid,payload)
+    return axios.post("/api/runsheet/" + userid,{data:payload});
   },
   // Deletes the book with the given id
   deleteBook: function(id) {

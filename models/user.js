@@ -11,6 +11,9 @@ var UserSchema = new Schema({
   password: {
         type: String,
         required: true
+    },
+    runsheet: {
+        type:[String]
     }
 });
 

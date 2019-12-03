@@ -25,7 +25,7 @@ router.post("/token", passport.authenticate('jwt', { session: false}), function(
   console.log(req);
   var token = getToken(req.headers);
   if (token) {
-      res.status(301);
+      res.status(200).send({_id:req.user._id,username: req.user.username,runsheet:req.user.runsheet});
   } else {
     return res.status(401).send({success: false, msg: 'Unauthorized.'});
   }
@@ -33,7 +33,7 @@ router.post("/token", passport.authenticate('jwt', { session: false}), function(
 })
 // If no API routes are hit, send the React app
 router.use( passport.authenticate('jwt', { session: false}), function(req, res) {
-  //console.log(req);
+  console.log(req.route);
   var token = getToken(req.headers);
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
   //if (token) {

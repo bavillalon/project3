@@ -11,21 +11,26 @@ axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken'
 
 class Books extends Component {
   state = {
-    documents: [],
+    user: "",
+    username: "",
+    runsheet: []
   };
 
   componentDidMount() {
-    this.load();
+    axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+    axios.post('/token')
+      .then(res => {
+        console.log(res.data.runsheet)
+        this.setState({ user: res.data._id, username: res.data.username, runsheet: res.data.runsheet.map(document => JSON.parse(document)) })
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error.response.status === 401) {
+          console.log(error.response.status)
+          this.props.history.push("/login");
+        }
+      });
   }
-
-  load = () => {
-    API.getBooks("DENSON")
-      .then(res =>{
-        console.log(res.data);
-        this.setState({ documents: res.data })}
-      )
-      .catch(err => console.log(err));
-  };
 
   deleteBook = id => {
     API.deleteBook(id)
@@ -36,35 +41,52 @@ class Books extends Component {
 
   render() {
     return (
-      <Container fluid>
+      <div className="container">
+        <div className="panel panel-default">
+         <div className="panel-heading">
+            <h3 className="panel-title">
+              County Search &nbsp;
+              {localStorage.getItem('jwtToken') &&
+                <button className="btn btn-primary" onClick={this.logout}>Logout {this.state.username}</button>
+              }
+            </h3>
+          </div>
         <Row>
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>Books On My List</h1>
+              <h1>Runsheet for {this.state.username} </h1>
             </Jumbotron>
-            <tr>
-                  <th>Instrument</th>
-                  <th>Grantor</th>
-                  <th>Grantee</th>
-                  <th>Filing Date</th>
-                  <th>Description</th>
-                </tr>
-            {this.state.documents.length ? (
-                this.state.documents.map(document => (
+            {this.state.runsheet.length==0?(<h3>Nothing in Runsheet</h3>):(
+              <table className="table table-stripe">
+                <thead>
                   <tr>
-                    <td>{document.instrumentNumber}</td>
-                    <td>{document.grantor}</td>
-                    <td>{document.grantee}</td>
-                    <td>{document.filingDate}</td>
-                    <td>{document.description}</td>
+                    <th>Instrument</th>
+                    <th>Grantor</th>
+                    <th>Grantee</th>
+                    <th>Filing Date</th>
+                    <th>Description</th>
                   </tr>
-            ))
-            ) : (
-              <h3>No Results to Display</h3>
+                </thead>
+                <tbody>
+                  {this.state.runsheet.map(document => (
+                    console.log(document),
+                    <tr key={document._id}>
+                      <td>{document[0].instrumentNumber}</td>
+                      <td>{document[0].grantor}</td>
+                      <td>{document[0].grantee}</td>
+                      <td>{document[0].filingDate}</td>
+                      <td>{document[0].description}</td>
+                    </tr>
+                  )
+                  )}
+                </tbody>
+            </table>
             )}
+            
           </Col>
         </Row>
-      </Container>
+        </div>
+        </div>
     );
   }
 }
