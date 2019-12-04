@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 function Nav() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-      <Link className="navbar-brand" to="/">
+      <Link className="navbar-brand" to="/search">
         County Search - Dawson
       </Link>
       <div>
         <ul className="navbar-nav">
           <li className="nav-item">
             <Link
-              to="/"
+              to="/search"
               className={
-                window.location.pathname === "/" || window.location.pathname === "/search"
+                window.location.pathname === "/search"
                   ? "nav-link active"
                   : "nav-link"
               }
@@ -31,21 +31,22 @@ function Nav() {
             </Link>
           </li>
           <li className="nav-item">
-            {localStorage.getItem('jwtToken') ? (<Link
+            {window.location.pathname ==="/login" ||window.location.pathname==="/" ? (<Link
             to="/login"
-              onClick={() => {
-                localStorage.removeItem('jwtToken');
-                window.location.reload();
-              }
-              }
               className="nav-link"
             >
-              Logout
+              Login
             </Link>) : (<Link
                 to="/login"
+                onClick={() => {
+                  localStorage.removeItem('jwtToken');
+                  localStorage.clear();
+                  window.location.reload();
+                }
+                }
                 className={window.location.pathname === "/login" ? "nav-link active" : "nav-link"}
               >
-                Login
+                Logout
             </Link>)}
           </li>
         </ul>

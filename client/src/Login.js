@@ -11,7 +11,8 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      message: ''
+      message: '',
+      userid: ''
     };
   }
   onChange = (e) => {
@@ -29,8 +30,10 @@ class Login extends Component {
       .then((result) => {
         console.log(result.data)
         localStorage.setItem('jwtToken', result.data.token);
+        localStorage.setItem('username',result.data.username);
+        localStorage.setItem('userid',result.data.userid);
         this.setState({ message: '' });
-        this.props.history.push('/')
+        this.props.history.push('/search')
       })
       .catch((error) => {
         if(error.response.status === 401) {

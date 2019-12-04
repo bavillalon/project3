@@ -11,14 +11,14 @@ import Login from './Login';
 import Register from './Register';
 const axios = require("axios");
 
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 ReactDOM.render(
   <Router>
     <div>
       <Nav />
 
       <Switch>
-        <Route exact path='/' component={App} />
+        <Route exact path='/' component={Login} />
+        <Route exact path="/search" component={App} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
         <Route exact path="/runsheet" component={Runsheet} />

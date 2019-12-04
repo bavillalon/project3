@@ -23,6 +23,8 @@ class App extends Component {
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+    axios.defaults.headers.common['username']= localStorage.getItem('username');
+    axios.defaults.headers.common['userid']=localStorage.getItem('userid')
     axios.post('/token')
       .then(res => {
         console.log(res.data._id)
@@ -39,6 +41,13 @@ class App extends Component {
 
   logout = () => {
     localStorage.removeItem('jwtToken');
+    localStorage.clear();
+    this.setState({
+      documents: [],
+      grantor: "",
+      user: "",
+      username: ""
+    })
     window.location.reload();
   }
 
@@ -85,14 +94,6 @@ class App extends Component {
     return (
       <div className="container">
         <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">
-              County Search &nbsp;
-              {localStorage.getItem('jwtToken') &&
-                <button className="btn btn-primary" onClick={this.logout}>Logout {this.state.username}</button>
-              }
-            </h3>
-          </div>
           <Row>
             <Col size="12">
               <Jumbotron>

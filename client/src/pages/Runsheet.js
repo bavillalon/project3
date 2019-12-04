@@ -19,6 +19,8 @@ class Books extends Component {
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+    axios.defaults.headers.common['username']= localStorage.getItem('username');
+    axios.defaults.headers.common['userid']=localStorage.getItem('userid')
     axios.post('/token')
       .then(res => {
         console.log(res.data.runsheet)
@@ -43,32 +45,24 @@ class Books extends Component {
     API.download(this.state.user)
       .then(res => FileDownload(res.data, 'runsheet.csv'))
       .catch(err => console.log(err));
-      
-
-    //if (this.state.grantor) {
-    //  API.searchGrantor(this.state.grantor)
-    //    .then(res => {
-    //      console.log(res.data)
-    //      this.setState({
-    //        documents: res.data
-    //      })
-    //    })
-    //    .catch(err => console.log(err));
-    //}
   };
+
+  logout = () => {
+    localStorage.removeItem('jwtToken');
+    localStorage.clear();    
+
+    this.setState({
+      runsheet: [],
+      user: "",
+      username: ""
+    })
+    window.location.reload();
+  }
 
   render() {
     return (
       <div className="container">
         <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title">
-              County Search &nbsp;
-              {localStorage.getItem('jwtToken') &&
-                <button className="btn btn-primary" onClick={this.logout}>Logout {this.state.username}</button>
-              }
-            </h3>
-          </div>
           <Row>
             <Col size="md-6 sm-12">
               <Jumbotron>

@@ -3,6 +3,7 @@ const router = require("express").Router();
 const apiRoutes = require("./api");
 var passport = require('passport');
 const Book = require("../models/counties")
+var User = require("../models/user.js");
 require('../config/passport')(passport);
 
 // API Routes
@@ -22,10 +23,14 @@ getToken = function (headers) {
 };
 
 router.post("/token", passport.authenticate('jwt', { session: false}), function(req,res){
-  console.log(req);
   var token = getToken(req.headers);
+  console.log(req.headers.userid,req.headers.username);
   if (token) {
-      res.status(200).send({_id:req.user._id,username: req.user.username,runsheet:req.user.runsheet});
+      User.findById(req.headers.userid,function(err,user){
+        if(err) console.log(err)
+
+        res.status(200).send({_id:req.headers.userid,username: req.headers.username,runsheet:user.runsheet});
+      })
   } else {
     return res.status(401).send({success: false, msg: 'Unauthorized.'});
   }
@@ -34,7 +39,6 @@ router.post("/token", passport.authenticate('jwt', { session: false}), function(
 
 // If no API routes are hit, send the React app
 router.use( passport.authenticate('jwt', { session: false}), function(req, res) {
-  console.log(req.route);
   var token = getToken(req.headers);
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
   //if (token) {
