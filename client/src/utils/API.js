@@ -11,6 +11,9 @@ export default {
     console.log(userid,payload)
     return axios.post("/api/runsheet/" + userid,{data:payload});
   },
+  download: function(userid){
+    return axios.get("/api/runsheet/"+ userid);
+  },
   // Deletes the book with the given id
   deleteBook: function(id) {
     return axios.delete("/api/books/" + id);

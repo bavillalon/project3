@@ -6,6 +6,7 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 import Thumbnail from "../components/Thumbnail";
 const axios = require("axios");
+const FileDownload = require('react-file-download');
 
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 
@@ -38,12 +39,29 @@ class Books extends Component {
       .catch(err => console.log(err));
   };
 
+  download = (event) => {
+    API.download(this.state.user)
+      .then(res => FileDownload(res.data, 'runsheet.csv'))
+      .catch(err => console.log(err));
+      
+
+    //if (this.state.grantor) {
+    //  API.searchGrantor(this.state.grantor)
+    //    .then(res => {
+    //      console.log(res.data)
+    //      this.setState({
+    //        documents: res.data
+    //      })
+    //    })
+    //    .catch(err => console.log(err));
+    //}
+  };
 
   render() {
     return (
       <div className="container">
         <div className="panel panel-default">
-         <div className="panel-heading">
+          <div className="panel-heading">
             <h3 className="panel-title">
               County Search &nbsp;
               {localStorage.getItem('jwtToken') &&
@@ -51,42 +69,45 @@ class Books extends Component {
               }
             </h3>
           </div>
-        <Row>
-          <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>Runsheet for {this.state.username} </h1>
-            </Jumbotron>
-            {this.state.runsheet.length==0?(<h3>Nothing in Runsheet</h3>):(
-              <table className="table table-stripe">
-                <thead>
-                  <tr>
-                    <th>Instrument</th>
-                    <th>Grantor</th>
-                    <th>Grantee</th>
-                    <th>Filing Date</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state.runsheet.map(document => (
-                    console.log(document),
-                    <tr key={document._id}>
-                      <td>{document[0].instrumentNumber}</td>
-                      <td>{document[0].grantor}</td>
-                      <td>{document[0].grantee}</td>
-                      <td>{document[0].filingDate}</td>
-                      <td>{document[0].description}</td>
-                    </tr>
-                  )
-                  )}
-                </tbody>
-            </table>
-            )}
-            
-          </Col>
-        </Row>
+          <Row>
+            <Col size="md-6 sm-12">
+              <Jumbotron>
+                <h1>Runsheet for {this.state.username} </h1>
+              </Jumbotron>
+              {this.state.runsheet.length == 0 ? (<h3>Nothing in Runsheet</h3>) : (
+                <div>
+                 <button className="btn btn-primary" onClick={this.download}>Download Runsheet</button>
+                  <table className="table table-stripe">
+                    <thead>
+                      <tr>
+                        <th>Instrument</th>
+                        <th>Grantor</th>
+                        <th>Grantee</th>
+                        <th>Filing Date</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.runsheet.map(document => (
+                        console.log(document),
+                        <tr key={document._id}>
+                          <td>{document[0].instrumentNumber}</td>
+                          <td>{document[0].grantor}</td>
+                          <td>{document[0].grantee}</td>
+                          <td>{document[0].filingDate}</td>
+                          <td>{document[0].description}</td>
+                        </tr>
+                      )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+            </Col>
+          </Row>
         </div>
-        </div>
+      </div>
     );
   }
 }

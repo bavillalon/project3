@@ -31,6 +31,7 @@ router.post("/token", passport.authenticate('jwt', { session: false}), function(
   }
 
 })
+
 // If no API routes are hit, send the React app
 router.use( passport.authenticate('jwt', { session: false}), function(req, res) {
   console.log(req.route);

@@ -7,6 +7,7 @@ require('../../config/passport')(passport);
 
 router
   .route("/:id")
+  .get(runsheetController.sendCSV)
   .post(runsheetController.findById)
 
 
