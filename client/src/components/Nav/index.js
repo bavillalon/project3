@@ -41,7 +41,7 @@ function Nav() {
                 onClick={() => {
                   localStorage.removeItem('jwtToken');
                   localStorage.clear();
-                  window.location.reload();
+                  window.location.assign("/")
                 }
                 }
                 className={window.location.pathname === "/login" ? "nav-link active" : "nav-link"}
