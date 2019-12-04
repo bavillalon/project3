@@ -8,6 +8,7 @@ import Thumbnail from "./components/Thumbnail";
 import Jumbotron from "./components/Jumbotron";
 import API from "./utils/API";
 
+
 class App extends Component {
 
   constructor(props) {

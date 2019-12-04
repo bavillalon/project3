@@ -6,7 +6,7 @@ function Nav() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-success">
       <Link className="navbar-brand" to="/">
-        React Google Book Search
+        County Search - Dawson
       </Link>
       <div>
         <ul className="navbar-nav">
@@ -24,11 +24,29 @@ function Nav() {
           </li>
           <li className="nav-item">
             <Link
-              to="/saved"
-              className={window.location.pathname === "/saved" ? "nav-link active" : "nav-link"}
+              to="/runsheet"
+              className={window.location.pathname === "/runsheet" ? "nav-link active" : "nav-link"}
             >
-              Saved
+              Runsheet
             </Link>
+          </li>
+          <li className="nav-item">
+            {localStorage.getItem('jwtToken') ? (<Link
+            to="/login"
+              onClick={() => {
+                localStorage.removeItem('jwtToken');
+                window.location.reload();
+              }
+              }
+              className="nav-link"
+            >
+              Logout
+            </Link>) : (<Link
+                to="/login"
+                className={window.location.pathname === "/login" ? "nav-link active" : "nav-link"}
+              >
+                Login
+            </Link>)}
           </li>
         </ul>
       </div>
