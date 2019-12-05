@@ -15,8 +15,8 @@ export default {
     return axios.get("/api/runsheet/"+ userid);
   },
   // Deletes the book with the given id
-  deleteBook: function(id) {
-    return axios.delete("/api/books/" + id);
+  clearRunsheet: function(userid) {
+    return axios.delete("/api/runsheet/" +userid);
   },
   // Saves a book to the database
   saveBook: function(bookData) {

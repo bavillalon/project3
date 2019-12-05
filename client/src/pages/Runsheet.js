@@ -47,6 +47,12 @@ class Books extends Component {
       .catch(err => console.log(err));
   };
 
+  clearRunsheet = (event) => {
+    API.clearRunsheet(this.state.user)
+      .then(res => this.setState({runsheet:[]}))
+      .catch(err => console.log(err));
+  };
+
   logout = () => {
     localStorage.removeItem('jwtToken');
     localStorage.clear();    
@@ -71,6 +77,7 @@ class Books extends Component {
               {this.state.runsheet.length == 0 ? (<h3>Nothing in Runsheet</h3>) : (
                 <div>
                  <button className="btn btn-primary" onClick={this.download}>Download Runsheet</button>
+                 <button className="btn btn-primary" onClick={this.clearRunsheet}>Clear Runsheet</button>
                   <table className="table table-stripe">
                     <thead>
                       <tr>
@@ -84,7 +91,7 @@ class Books extends Component {
                     <tbody>
                       {this.state.runsheet.map(document => (
                         console.log(document),
-                        <tr key={document._id}>
+                        <tr key={document[0]._id}>
                           <td>{document[0].instrumentNumber}</td>
                           <td>{document[0].grantor}</td>
                           <td>{document[0].grantee}</td>

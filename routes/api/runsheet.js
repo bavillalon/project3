@@ -9,6 +9,7 @@ router
   .route("/:id")
   .get(runsheetController.sendCSV)
   .post(runsheetController.findById)
+  .delete(runsheetController.clearRunsheet)
 
 
   
